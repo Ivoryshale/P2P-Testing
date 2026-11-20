@@ -29,7 +29,7 @@ function ConnectToPeer(ID) {
         Connection.send("You have connected to: "+MyPeer.id);
     });
 
-    // Also listen for replies back on this same connection
+    //Listen for replies
     Connection.on("data", (Data) => {
         console.log("Received data", Data);
     });
