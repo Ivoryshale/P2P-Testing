@@ -26,12 +26,12 @@ function ConnectToPeer(ID) {
     Connection.on("open", () => {
         console.log("Connected to:", ID);
         PeerConnection = Connection;
-        Connection.send("You have connected to"+MyPeer.id);
+        Connection.send("You have connected to: "+MyPeer.id);
     });
 
     // Also listen for replies back on this same connection
     Connection.on("data", (Data) => {
-        console.log("Received reply:", Data);
+        console.log("Received data", Data);
     });
 
     return Connection;
