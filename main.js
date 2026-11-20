@@ -26,7 +26,7 @@ function ConnectToPeer(ID) {
     Connection.on("open", () => {
         console.log("Connected to:", ID);
         PeerConnection = Connection;
-        Connection.send("Hello,", ID);
+        Connection.send("You have connected to"+MyPeer.id);
     });
 
     // Also listen for replies back on this same connection
@@ -52,7 +52,7 @@ document.body.append(IDPanel);
 
 IDInput = document.createElement("input");
 IDInput.placeholder = "Enter Peer ID";
-IDInput.style.height = "25";
+IDInput.style.height = "25px";
 IDPanel.append(IDInput);
 
 ConnectButton = document.createElement("button");
