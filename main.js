@@ -4,7 +4,7 @@ OtherPeer = 0;
 PeerConnection = 0;
 
 MyPeer.on("open", (ID) => {
-    IDDisplay.textContent = (ID);
+    IDDisplay.innerHTML = ("My Peer ID: "+ID);
 });
 
 //Listen for connections
@@ -14,6 +14,7 @@ MyPeer.on("connection", (Connection) => {
   
     Connection.on("data", (Data) => {
         console.log("Received data:", Data);
+        CreateMessage("Peer", Data);
   });
 });
 
@@ -26,12 +27,14 @@ function ConnectToPeer(ID) {
     Connection.on("open", () => {
         console.log("Connected to:", ID);
         PeerConnection = Connection;
-        Connection.send("You have connected to: "+MyPeer.id);
+        SendData(PeerConnection, "Connected to: "+MyPeer.id);
+        CreateMessage("System", "Connected to: "+PeerConnection.peer)
     });
 
     //Listen for replies
     Connection.on("data", (Data) => {
         console.log("Received data", Data);
+        CreateMessage("Peer", Data)
     });
 
     return Connection;
@@ -44,9 +47,14 @@ function SendData(Connection, Data) {
     Connection.send(Data)
 };
 
+function CreateMessage(Sender, Data) {
+    let Message = document.createElement("li");
+    Message.innerHTML = Sender+": "+Data;
+    MessageDisplay.append(Message)
+};
 
 
-//UI
+//UI (WIP)
 IDPanel = document.createElement("div");
 document.body.append(IDPanel);
 
@@ -56,7 +64,7 @@ IDInput.style.height = "25px";
 IDPanel.append(IDInput);
 
 ConnectButton = document.createElement("button");
-ConnectButton.textContent = "Connect";
+ConnectButton.innerHTML = "Connect";
 ConnectButton.style.width = "80px";
 ConnectButton.style.height = "25px";
 ConnectButton.onclick = () => ConnectToPeer(IDInput.value);
@@ -71,12 +79,15 @@ MessageInput.style.height = "25px";
 MessagePanel.append(MessageInput);
 
 SendButton = document.createElement("button");
-SendButton.textContent = "Send";
+SendButton.innerHTML = "Send";
 SendButton.style.width = "80px";
 SendButton.style.height = "25px"
 SendButton.onclick = () => SendData(PeerConnection, MessageInput.value);
 MessagePanel.append(SendButton);
 
+MessageDisplay = document.createElement("ul");
+MessagePanel.append(MessageDisplay);
+
 IDDisplay =  document.createElement("p");
-IDDisplay.textContent = "Loading...";
-document.body.append(IDDisplay);
+IDDisplay.innerHTML = "Loading...";
+IDPanel.append(IDDisplay);
