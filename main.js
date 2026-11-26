@@ -9,7 +9,7 @@ MyPeer.on("open", (ID) => {
 
 //Listen for connections
 MyPeer.on("connection", (Connection) => {
-    console.log("Connected to", Connection.peer);
+    CreateMessage("System", "Connected to: " + Connection.peer)
     PeerConnection = Connection;
   
     Connection.on("data", (Data) => {
@@ -25,9 +25,7 @@ function ConnectToPeer(ID) {
     let Connection = MyPeer.connect(ID);
 
     Connection.on("open", () => {
-        console.log("Connected to:", ID);
         PeerConnection = Connection;
-        SendData(PeerConnection, "Connected to: "+MyPeer.id);
         CreateMessage("System", "Connected to: "+PeerConnection.peer)
     });
 
@@ -45,6 +43,7 @@ function ConnectToPeer(ID) {
 //Send Data
 function SendData(Connection, Data) {
     Connection.send(Data)
+    CreateMessage("You", Data)
 };
 
 function CreateMessage(Sender, Data) {
